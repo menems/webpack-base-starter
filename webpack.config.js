@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -22,7 +21,6 @@ const config = module.exports = {
             {test: /\.js$/, loader: 'babel?presets[]=es2015', exclude: /node_modules/},
             {test: /\.html$/, loader: 'raw'},
             {test: /\.css$/, loader: 'style!css'},
-            {test: /\.styl$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader!stylus-loader')}
         ]
     },
     plugins: [
@@ -30,7 +28,6 @@ const config = module.exports = {
             'process.env': { NODE_ENV: JSON.stringify(env) }
         }),
         new HtmlWebpackPlugin({template: './src/index.html', inject: 'body'}),
-        new ExtractTextPlugin('[name].[hash].css')
     ],
     resolve: {
         root: path.resolve('./src'),
