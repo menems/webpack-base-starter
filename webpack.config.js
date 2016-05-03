@@ -27,7 +27,7 @@ const config = module.exports = {
         new webpack.DefinePlugin({
             'process.env': { NODE_ENV: JSON.stringify(env) }
         }),
-        new HtmlWebpackPlugin({template: './src/index.html', inject: 'body'}),
+        new HtmlWebpackPlugin({template: './index.html', inject: 'body'}),
     ],
     resolve: {
         root: path.resolve('./src'),
