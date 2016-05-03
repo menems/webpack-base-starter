@@ -9,7 +9,7 @@ const config = module.exports = {
     context: path.join(__dirname, './src'),
     entry: {
         app: [
-            './src/index.js'
+            './index.js'
         ]
     },
     devtool: 'eval',
