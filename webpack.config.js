@@ -6,13 +6,16 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const env = process.env.NODE_ENV || 'development';
 
 const config = module.exports = {
+    context: path.join(__dirname, './src'),
     entry: {
-        app: ['./src/index.js']
+        app: [
+            './src/index.js'
+        ]
     },
-    devtool: 'source-map',
+    devtool: 'eval',
     output: {
         path: 'dist',
-        filename: '[name].bundle.js'
+        filename: '[name].[hash].js'
     },
     module: {
         loaders: [
@@ -23,21 +26,27 @@ const config = module.exports = {
         ]
     },
     plugins: [
-        new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.NoErrorsPlugin(),
+        new webpack.DefinePlugin({
+            'process.env': { NODE_ENV: JSON.stringify(env) }
+        }),
         new HtmlWebpackPlugin({template: './src/index.html', inject: 'body'}),
         new ExtractTextPlugin('[name].[hash].css')
     ],
     resolve: {
         root: path.resolve('./src'),
-        modulesDirectories: ['node_modules']
+        extensions: ['', '.js']
+    },
+    devServer: {
+        contentBase: './src',
+        hot: true
     }
 };
 
 if (env === 'production') {
-    config.devtool = 'eval';
-    config.output.filename = '[name].[hash].js';
+    config.devtool = 'source-map';
     config.plugins.push(
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.NoErrorsPlugin(),
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({minimize: true, sourceMap: true})
     );
